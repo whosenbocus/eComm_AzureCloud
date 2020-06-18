@@ -25,8 +25,8 @@ namespace Payment.API.Controllers
 
         [HttpGet]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        [ProducesResponseType(typeof(IEnumerable<Model.Payment>), (int)HttpStatusCode.OK)]
-        public async Task<ActionResult<IEnumerable<Model.Payment>>> GetAllPayments()
+        [ProducesResponseType(typeof(IEnumerable<PaymentDTOs>), (int)HttpStatusCode.OK)]
+        public async Task<ActionResult<IEnumerable<PaymentDTOs>>> GetAllPayments()
         {
             var payments = await _paymentRepo.GetPaymentsAsync();
             return Ok(_mapper.Map<IEnumerable<PaymentDTOs>>(payments));
@@ -35,8 +35,8 @@ namespace Payment.API.Controllers
 
         [HttpGet("{Id}",Name= "GetPayment")]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        [ProducesResponseType(typeof(Model.Payment), (int)HttpStatusCode.OK)]
-        public async Task<ActionResult<Model.Payment>> GetPayment(int Id)
+        [ProducesResponseType(typeof(PaymentDTOs), (int)HttpStatusCode.OK)]
+        public async Task<ActionResult<PaymentDTOs>> GetPayment(int Id)
         {
             var payment = await _paymentRepo.GetPaymentAsync(Id);
             return Ok(_mapper.Map<PaymentDTOs>(payment));
