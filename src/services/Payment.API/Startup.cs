@@ -11,6 +11,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Payment.API.Infrastructure.Repositories;
+using Payment.API.Model;
 
 namespace Payment.API
 {
@@ -29,6 +31,7 @@ namespace Payment.API
             services.AddControllers();
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+            services.AddScoped<IPaymentRepository, AzureTablePaymentRepository>();
 
         }
 
