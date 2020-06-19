@@ -33,12 +33,12 @@ namespace Payment.API.Controllers
         }
 
 
-        [HttpGet("{Id}",Name= "GetPayment")]
+        [HttpGet("{desc}/{Id}",Name= "GetPayment")]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(PaymentDTOs), (int)HttpStatusCode.OK)]
-        public async Task<ActionResult<PaymentDTOs>> GetPayment(int Id)
+        public async Task<ActionResult<PaymentDTOs>> GetPayment(string desc,string Id)
         {
-            var payment = await _paymentRepo.GetPaymentAsync(Id);
+            var payment = await _paymentRepo.GetPaymentAsync(desc, Id);
             return Ok(_mapper.Map<PaymentDTOs>(payment));
 
         }
@@ -49,20 +49,20 @@ namespace Payment.API.Controllers
         public async Task<ActionResult<PaymentDTOs>> SavePayments(PaymentDTOs paymentdto)
         {
             var Payment = _mapper.Map<Model.Payment>(paymentdto);
-            await _paymentRepo.SavePaymentAsync(Payment);
+            _paymentRepo.SavePaymentAsync(Payment);
 
             var paymentDto = _mapper.Map<PaymentDTOs>(Payment);
 
 
-            return CreatedAtAction(nameof(GetPayment),new { Id = Payment.Id }, paymentDto);
+            return CreatedAtAction(nameof(GetPayment),new { Id = Payment.RowKey }, paymentDto);
         }
 
-        [HttpPut("{Id}")]
+        [HttpPut("{desc}/{Id}")]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(PaymentDTOs), (int)HttpStatusCode.OK)]
-        public async Task<ActionResult<PaymentDTOs>> UpdatePayments(int Id, PaymentDTOs paymentdto)
+        public async Task<ActionResult<PaymentDTOs>> UpdatePayments(string desc, string Id, PaymentDTOs paymentdto)
         {
-            Model.Payment Payment = await _paymentRepo.GetPaymentAsync(Id);
+            Model.Payment Payment = await _paymentRepo.GetPaymentAsync(desc,Id);
             if (Payment == null)
             {
                 return NotFound();
@@ -74,12 +74,12 @@ namespace Payment.API.Controllers
         }
 
 
-        [HttpDelete("{Id}")]
+        [HttpDelete("{desc}/{Id}")]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         [ProducesResponseType((int)HttpStatusCode.NoContent)]
-        public async Task<ActionResult<Model.Payment>> DeletePayments(int Id)
+        public async Task<ActionResult<Model.Payment>> DeletePayments(string desc, string Id)
         {
-            Model.Payment Payment = await _paymentRepo.GetPaymentAsync(Id);
+            Model.Payment Payment = await _paymentRepo.GetPaymentAsync(desc, Id);
             if (Payment == null)
             {
                 return NotFound();

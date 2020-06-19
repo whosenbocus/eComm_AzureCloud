@@ -3,19 +3,43 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Azure.Cosmos.Table;
+
+
 
 namespace Payment.API.Infrastructure.Repositories
 {
     public class AzureTablePaymentRepository : IPaymentRepository
     {
-        public Task<bool> DeletePaymentAsync(Model.Payment payment)
+        private readonly CloudTable table;
+
+        public AzureTablePaymentRepository()
         {
-            throw new NotImplementedException();
+            var account = CloudStorageAccount.Parse("[connection string]");
+            var client = account.CreateCloudTableClient();
+            table = client.GetTableReference("Payment");
+            table.CreateIfNotExists();
         }
 
-        public Task<Model.Payment> GetPaymentAsync(int Id)
+        public async Task<bool> DeletePaymentAsync(Model.Payment payment)
         {
-            throw new NotImplementedException();
+            TableOperation deleteOperation = TableOperation.Delete(payment);
+            TableResult result = await table.ExecuteAsync(deleteOperation);
+            if (result.RequestCharge.HasValue)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public async Task<Model.Payment> GetPaymentAsync(string desc, string Id)
+        {
+            TableOperation retrieveOperation = TableOperation.Retrieve<Model.Payment>(desc, Id);
+            TableResult result = await table.ExecuteAsync(retrieveOperation);
+            Model.Payment customer = result.Result as Model.Payment;
+
+
+            return customer;
         }
 
         public Task<IEnumerable<Model.Payment>> GetPaymentsAsync()
@@ -23,14 +47,32 @@ namespace Payment.API.Infrastructure.Repositories
             throw new NotImplementedException();
         }
 
-        public Task SavePaymentAsync(Model.Payment payment)
+        public async Task<Model.Payment> SavePaymentAsync(Model.Payment payment)
         {
-            throw new NotImplementedException();
+            // Create the InsertOrReplace table operation
+            TableOperation insertOrMergeOperation = TableOperation.InsertOrMerge(payment);
+
+            // Execute the operation.
+            TableResult result = await table.ExecuteAsync(insertOrMergeOperation);
+            Model.Payment insertedPayment = result.Result as Model.Payment;
+
+            // Get the request units consumed by the current operation. RequestCharge of a TableResult is only applied to Azure Cosmos DB
+
+            return insertedPayment;
         }
 
-        public Task<Model.Payment> UpdatePaymentAsync(Model.Payment payment)
+        public async Task<Model.Payment> UpdatePaymentAsync(Model.Payment payment)
         {
-            throw new NotImplementedException();
+            // Create the InsertOrReplace table operation
+            TableOperation insertOrMergeOperation = TableOperation.InsertOrMerge(payment);
+
+            // Execute the operation.
+            TableResult result = await table.ExecuteAsync(insertOrMergeOperation);
+            Model.Payment insertedPayment = result.Result as Model.Payment;
+
+            // Get the request units consumed by the current operation. RequestCharge of a TableResult is only applied to Azure Cosmos DB
+
+            return insertedPayment;
         }
     }
 }

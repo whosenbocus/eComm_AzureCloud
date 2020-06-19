@@ -27,12 +27,13 @@ namespace Payment.UnitTests
         public async Task Get_payment_success()
         {
             //Arrange
-            var fakePaymentId = 1;
+            var fakePaymentId = "1";
+            var fakePaymentdesc = "1";
             var fakePaymentdto = GetPaymentFakeDTOs(fakePaymentId);
             var fakePayment = GetPaymentFake(fakePaymentId);
 
 
-            _PaymentRepositoryMock.Setup(x => x.GetPaymentAsync(It.IsAny<int>())).Returns(Task.FromResult(fakePayment));
+            _PaymentRepositoryMock.Setup(x => x.GetPaymentAsync(It.IsAny<string>(), It.IsAny<string>())).Returns(Task.FromResult(fakePayment));
 
             _mapperMock.Setup(x => x.Map<PaymentDTOs>(It.IsAny<API.Model.Payment>()))
             .Returns((API.Model.Payment source) =>
@@ -45,23 +46,22 @@ namespace Payment.UnitTests
                 _PaymentRepositoryMock.Object,
                 _mapperMock.Object);
 
-            var actionResult = await paymentController.GetPayment(fakePaymentId);
+            var actionResult = await paymentController.GetPayment(fakePaymentdesc,fakePaymentId);
 
             //Assert
             Assert.Equal((actionResult.Result as OkObjectResult).StatusCode, (int)System.Net.HttpStatusCode.OK);
-            Assert.Equal((((ObjectResult)actionResult.Result).Value as PaymentDTOs).Description, fakePayment.Description);
+            Assert.Equal((((ObjectResult)actionResult.Result).Value as PaymentDTOs).Description, fakePayment.PartitionKey);
         }
 
         [Fact]
         public async Task Post_Payment_success()
         {
             //Arrange
-            var fakePaymentId = 1;
+            var fakePaymentId = "1";
             var fakePaymentdto = GetPaymentFakeDTOs(fakePaymentId);
             var fakePayment = GetPaymentFake(fakePaymentId);
 
-            _PaymentRepositoryMock.Setup(x => x.SavePaymentAsync(It.IsAny<API.Model.Payment>()))
-                .Returns(Task.FromResult(fakePayment));
+            _PaymentRepositoryMock.Setup(x => x.SavePaymentAsync(It.IsAny<API.Model.Payment>()));
 
             _mapperMock.Setup(x => x.Map<PaymentDTOs>(It.IsAny<API.Model.Payment>()))
             .Returns((API.Model.Payment source) =>
@@ -84,12 +84,12 @@ namespace Payment.UnitTests
 
             //Assert
             Assert.Equal((actionResult.Result as CreatedAtActionResult).StatusCode, (int)System.Net.HttpStatusCode.Created);
-            Assert.Equal((((ObjectResult)actionResult.Result).Value as PaymentDTOs).Description, fakePayment.Description);
+            Assert.Equal((((ObjectResult)actionResult.Result).Value as PaymentDTOs).Description, fakePayment.PartitionKey);
 
         }
 
 
-        private PaymentDTOs GetPaymentFakeDTOs(int fakePaymentId)
+        private PaymentDTOs GetPaymentFakeDTOs(string fakePaymentId)
         {
             return new PaymentDTOs()
             {
@@ -99,14 +99,12 @@ namespace Payment.UnitTests
             };
         }
 
-        private API.Model.Payment GetPaymentFake(int fakePaymentId)
+        private API.Model.Payment GetPaymentFake(string fakePaymentId)
         {
-            return new API.Model.Payment()
+            return new API.Model.Payment("test")
             {
-                Id = fakePaymentId,
                 Timestamp = DateTime.Now,
                 Amount = 10,
-                Description = "test"
             };
         }
     }

@@ -7,9 +7,9 @@ namespace Payment.API.Model
 {
     public interface IPaymentRepository
     {
-        Task<Payment> GetPaymentAsync(int Id);
+        Task<Payment> GetPaymentAsync(string desc,string Id);
         Task<IEnumerable<Payment>> GetPaymentsAsync();
-        Task SavePaymentAsync(Payment payment);
+        Task<Payment> SavePaymentAsync(Payment payment);
         Task<Payment> UpdatePaymentAsync(Payment payment);
         Task<bool> DeletePaymentAsync(Payment payment);
     }
