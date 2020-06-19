@@ -54,7 +54,7 @@ namespace Payment.API.Controllers
             var paymentDto = _mapper.Map<PaymentDTOs>(Payment);
 
 
-            return CreatedAtAction(nameof(GetPayment),new { Id = Payment.RowKey }, paymentDto);
+            return CreatedAtAction(nameof(GetPayment),new {desc= Payment.PartitionKey ,Id = Payment.RowKey }, paymentDto);
         }
 
         [HttpPut("{desc}/{Id}")]
@@ -84,6 +84,8 @@ namespace Payment.API.Controllers
             {
                 return NotFound();
             }
+            Payment.PartitionKey = desc;
+            Payment.RowKey = Id;
             await _paymentRepo.DeletePaymentAsync(Payment);
             return NoContent();
         }
