@@ -32,6 +32,7 @@ namespace Payment.API
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddScoped<IPaymentRepository, AzureTablePaymentRepository>();
+            services.AddApplicationInsightsTelemetry(Configuration["APPINSIGHTS_INSTRUMENTATIONKEY"]);
 
         }
 
