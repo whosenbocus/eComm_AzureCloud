@@ -32,3 +32,31 @@ steps:
   inputs:
     command: 'build'
     projects: '$(solution)'
+
+
+- task: AzurePowerShell@5
+  inputs:
+    azureSubscription: 'Azure Connection'
+    ScriptType: 'InlineScript'
+    Inline: |
+      Get-AzResourceGroup -Name eCommAzure -ErrorVariable NotPresent
+            if($NotPresent)
+            {
+                New-AzResourceGroup -Name eCommAzure -Location eastus
+            }
+    azurePowerShellVersion: 'LatestVersion'
+    pwsh: true
+
+- task: AzureResourceManagerTemplateDeployment@3
+  inputs:
+    deploymentScope: 'Resource Group'
+    azureResourceManagerConnection: 'Azure Connection'
+    subscriptionId: '9188b8f6-6bff-4fd2-aa50-710ea416c84a'
+    action: 'Create Or Update Resource Group'
+    resourceGroupName: 'eCommAzure'
+    location: 'East US'
+    templateLocation: 'URL of the file'
+    csmFileLink: 'https://raw.githubusercontent.com/whosenbocus/eComm_AzureCloud/master/deploy/Azure/Payment.API/PaymentAPI.json'
+    csmParametersFileLink: 'https://raw.githubusercontent.com/whosenbocus/eComm_AzureCloud/master/deploy/Azure/Payment.API/PaymentAPI.parameters.json'
+    deploymentMode: 'Incremental'
+
