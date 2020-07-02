@@ -4,6 +4,9 @@
     "parameters": {
       "storage": {
         "value": "paymentstorage"
+      },
+      "ApplicationInsight": {
+        "value": "payment.API.AI"
       }
     }
   }

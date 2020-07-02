@@ -1,17 +1,23 @@
 {
-    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
       "storage": {
         "type": "string"
+      },
+      "ApplicationInsight": {
+        "type": "string"
       }
     },
     "variables": {
+    
+        "StorageName": "[toLower(concat(parameters('storage'), take(uniqueString(resourceGroup().id),5)))]",
+        "WebName": "[toLower(concat('PaymentAPI', uniqueString(resourceGroup().id)))]"
     },
     "resources": [
       {
         "type": "Microsoft.Storage/storageAccounts",
-        "name": "[toLower(concat(parameters('storage'), take(uniqueString(resourceGroup().id),5)))]",
+        "name": "[variables('StorageName')]",
         "apiVersion": "2016-01-01",
         "location": "[resourceGroup().location]",
         "tags": {
@@ -21,8 +27,62 @@
           "name": "Standard_LRS"
         },
         "kind": "Storage"
-      }
+      },
+      {
+            "name": "[parameters('ApplicationInsight')]",
+            "type": "microsoft.insights/components",
+            "apiVersion": "2015-05-01",
+            "location": "[resourceGroup().location]",
+            "kind":"web",
+            "properties": {
+                "ApplicationId": "[parameters('ApplicationInsight')]",
+                "Application_Type": "web",
+                "Flow_Type": "Bluefield"
+            }
+        },
+        {
+            "name": "PaymentPlan",
+            "type": "Microsoft.Web/serverfarms",
+            "apiVersion": "2018-02-01",
+            "location": "[resourceGroup().location]",
+            "sku": {
+                "name": "F1",
+                "capacity": 1
+            },
+            "tags": {
+                "displayName": "PaymentPlan"
+            },
+            "properties": {
+                "name": "PaymentPlan"
+            }
+        },
+        {
+            "name": "[variables('WebName')]",
+            "type": "Microsoft.Web/sites",
+            "apiVersion": "2018-11-01",
+            "location": "[resourceGroup().location]",
+            "tags": {
+                "[concat('hidden-related:', resourceGroup().id, '/providers/Microsoft.Web/serverfarms/PaymentPlan')]": "Resource",
+                "displayName": "[variables('WebName')]"
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/serverfarms', 'PaymentPlan')]"
+            ],
+            "properties": {
+                "name": "[variables('WebName')]",
+                "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', 'PaymentPlan')]"
+            }
+        }    
+        
     ],
     "outputs": {
+    "storageEndpoint": {
+      "type": "String",
+      "value": "[reference(variables('StorageName')).primaryEndpoints.table]"
+    },
+    "WebSiteName": {
+      "type": "String",
+      "value": "[reference(variables('WebName')).name]"
     }
+  }
   }
