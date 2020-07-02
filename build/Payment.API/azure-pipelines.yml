@@ -39,11 +39,10 @@ steps:
     azureSubscription: 'Azure Connection'
     ScriptType: 'InlineScript'
     Inline: |
-      Get-AzResourceGroup -Name eCommAzure -ErrorVariable NotPresent
-            if($NotPresent)
-            {
-                New-AzResourceGroup -Name eCommAzure -Location eastus
-            }
+      if((Get-AzResourceGroup | where {$_.ResourceGroupName -eq 'eCommAzure'}).Length -eq 0)
+      {
+          New-AzResourceGroup -Name eCommAzure -Location eastus
+      }
     azurePowerShellVersion: 'LatestVersion'
     pwsh: true
 
