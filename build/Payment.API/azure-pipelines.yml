@@ -33,17 +33,19 @@ steps:
     command: 'build'
     projects: '$(solution)'
 
-- task: AzureCLI@2
+
+- task: AzurePowerShell@5
   inputs:
     azureSubscription: 'Azure Connection'
-    scriptType: 'pscore'
-    scriptLocation: 'inlineScript'
-    inlineScript: |
+    ScriptType: 'InlineScript'
+    Inline: |
       Get-AzResourceGroup -Name eCommAzure -ErrorVariable NotPresent
-      if($NotPresent)
-      {
-          New-AzResourceGroup -Name eCommAzure -Location eastus
-      }
+            if($NotPresent)
+            {
+                New-AzResourceGroup -Name eCommAzure -Location eastus
+            }
+    azurePowerShellVersion: 'LatestVersion'
+    pwsh: true
 
 - task: AzureResourceManagerTemplateDeployment@3
   inputs:
