@@ -35,7 +35,7 @@ steps:
 
 - task: AzureCLI@2
   inputs:
-    azureSubscription: 'Visual Studio Professional with MSDN(1)(9188b8f6-6bff-4fd2-aa50-710ea416c84a)'
+    azureSubscription: 'Azure Connection'
     scriptType: 'pscore'
     scriptLocation: 'inlineScript'
     inlineScript: |
@@ -48,7 +48,7 @@ steps:
 - task: AzureResourceManagerTemplateDeployment@3
   inputs:
     deploymentScope: 'Resource Group'
-    azureResourceManagerConnection: 'Visual Studio Professional with MSDN(9188b8f6-6bff-4fd2-aa50-710ea416c84a)'
+    azureResourceManagerConnection: 'Azure Connection'
     subscriptionId: '9188b8f6-6bff-4fd2-aa50-710ea416c84a'
     action: 'Create Or Update Resource Group'
     resourceGroupName: 'eCommAzure'
