@@ -47,6 +47,7 @@ steps:
     azurePowerShellVersion: 'LatestVersion'
     pwsh: true
 
+
 - task: AzureResourceManagerTemplateDeployment@3
   inputs:
     deploymentScope: 'Resource Group'
@@ -59,4 +60,7 @@ steps:
     csmFileLink: 'https://raw.githubusercontent.com/whosenbocus/eComm_AzureCloud/master/deploy/Azure/Payment.API/PaymentAPI.json'
     csmParametersFileLink: 'https://raw.githubusercontent.com/whosenbocus/eComm_AzureCloud/master/deploy/Azure/Payment.API/PaymentAPI.parameters.json'
     deploymentMode: 'Incremental'
+    deploymentOutputs: 'ArmOutputs'
+
+
 
