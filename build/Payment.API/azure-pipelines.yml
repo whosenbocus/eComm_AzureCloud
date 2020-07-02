@@ -39,8 +39,8 @@ steps:
     scriptType: 'pscore'
     scriptLocation: 'inlineScript'
     inlineScript: |
-      $ResourceGroup = Get-AzResourceGroup -Name eCommAzure
-      if($ResourceGroup -eq $null)
+      Get-AzResourceGroup -Name eCommAzure -ErrorVariable NotPresent
+      if($NotPresent)
       {
           New-AzResourceGroup -Name eCommAzure -Location eastus
       }
