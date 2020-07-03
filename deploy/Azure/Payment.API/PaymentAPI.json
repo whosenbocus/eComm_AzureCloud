@@ -77,12 +77,16 @@
     ],
     "outputs": {
     "storageEndpoint": {
-      "type": "String",
-      "value": "[reference(variables('StorageName')).primaryEndpoints.table]"
+      "type": "string",
+      "value": "[variables('StorageName')]"
     },
     "WebSiteName": {
-      "type": "String",
-      "value": "[reference(variables('WebName')).name]"
+      "type": "string",
+      "value": "[variables('WebName')]"
+    },
+    "ApplicationInsight": {
+      "type": "string",
+      "value": "[parameters('ApplicationInsight')]"
     }
   }
   }
