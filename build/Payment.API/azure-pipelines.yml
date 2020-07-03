@@ -19,7 +19,6 @@ variables:
   solution: 'src/services/Payment.API/Payment.API.csproj'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
-  webSiteName: ''
 
 steps:
 - task: DotNetCoreCLI@2
