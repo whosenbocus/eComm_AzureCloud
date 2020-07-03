@@ -81,7 +81,7 @@ steps:
     Inline: |
       $ResourceGroup = 'eCommAzure'
       $saKey = (Get-AzStorageAccountKey -ResourceGroupName $ResourceGroup -Name $(storageEndpoint))[0].Value
-      $SAConnectionString = 'DefaultEndpointsProtocol=https;AccountName=' + $(storageEndpoint) + ';AccountKey=' + $saKey + ';EndpointSuffix=core.windows.net' 
+      $SAConnectionString = "DefaultEndpointsProtocol=https;AccountName=$(storageEndpoint);AccountKey=$saKey;EndpointSuffix=core.windows.net"
       $ApplicationInsight = Get-AzApplicationInsights -ResourceGroupName $ResourceGroup -Name $(applicationInsight)
       
       $web = Get-AzWebApp -ResourceGroupName $ResourceGroup -Name $(webSiteName)
