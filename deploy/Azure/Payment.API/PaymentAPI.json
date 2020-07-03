@@ -77,15 +77,15 @@
     ],
     "outputs": {
     "storageEndpoint": {
-      "type": "securestring",
+      "type": "string",
       "value": "[variables('StorageName')]"
     },
-    "WebSiteName": {
+    "webSiteName": {
       "type": "string",
       "value": "[variables('WebName')]"
     },
     "ApplicationInsight": {
-      "type": "securestring",
+      "type": "string",
       "value": "[parameters('ApplicationInsight')]"
     }
   }
