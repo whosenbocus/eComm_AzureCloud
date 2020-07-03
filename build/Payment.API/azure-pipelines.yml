@@ -73,6 +73,6 @@ steps:
     targetType: 'inline'
     script: |
       Write-Host "Hello World"
-      Write-Host "$(webSiteName)"
+      Write-Host "Site is ($env:webSiteName)"
 
 
