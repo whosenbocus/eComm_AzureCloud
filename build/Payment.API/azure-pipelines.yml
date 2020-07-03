@@ -65,10 +65,12 @@ steps:
 
 - task: PowerShell@2
   inputs:
-    filePath: 'https://raw.githubusercontent.com/whosenbocus/eComm_AzureCloud/master/deploy/parse_arm_deployment_output.ps1'
+    filePath: '$(System.DefaultWorkingDirectory)/deploy/parse_arm_deployment_output.ps1'
     arguments: '-ArmOutputString ''$(armOutputString)'' -MakeOutput -ErrorAction Stop'
 
 - task: PowerShell@2
   inputs:
     targetType: 'inline'
     script: 'write-host $(WebSiteName)'
+
+
