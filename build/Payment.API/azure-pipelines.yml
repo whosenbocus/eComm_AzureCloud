@@ -19,6 +19,7 @@ variables:
   solution: 'src/services/Payment.API/Payment.API.csproj'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
+  name: 'world'
 
 steps:
 - task: DotNetCoreCLI@2
@@ -71,7 +72,7 @@ steps:
   inputs:
     targetType: 'inline'
     script: |
-      Write-Host "Hello World"
-      Write-Host "Site is ($env:webSiteName)"
+      Write-Host "Hello $(name)"
+      Write-Host "Site is $(webSiteName)"
 
 
