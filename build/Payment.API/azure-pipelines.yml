@@ -33,17 +33,6 @@ steps:
     command: 'build'
     projects: '$(solution)'
 
-- task: DotNetCoreCLI@2
-  inputs:
-    command: 'publish'
-    publishWebProjects: true
-
-- task: PublishBuildArtifacts@1
-  inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    ArtifactName: 'PaymentAPI'
-    publishLocation: 'FilePath'
-    TargetPath: '$(Build.ArtifactStagingDirectory)'
 
 - task: AzurePowerShell@5
   inputs:
