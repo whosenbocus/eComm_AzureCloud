@@ -33,13 +33,13 @@ steps:
     command: 'build'
     projects: '$(solution)'
 
+
 - task: DotNetCoreCLI@2
   inputs:
     command: 'publish'
-    publishWebProjects: true
+    publishWebProjects: false
+    projects: '**/Payment.API.csproj'
     arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
-    workingDirectory: '$(System.DefaultWorkingDirectory)\src\services\Payment.API'
-
 
 - task: PublishBuildArtifacts@1
   inputs:
@@ -111,10 +111,3 @@ steps:
     azurePowerShellVersion: 'LatestVersion'
     pwsh: true
 
-- task: AzureRmWebAppDeployment@4
-  inputs:
-    ConnectionType: 'AzureRM'
-    azureSubscription: 'Azure Connection'
-    appType: 'webApp'
-    WebAppName: '$(webSiteName)'
-    packageForLinux: '$(System.ArtifactStagingDirectory)/**/*.zip'
