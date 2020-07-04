@@ -37,9 +37,9 @@ steps:
   inputs:
     command: 'publish'
     publishWebProjects: true
-    projects: '$(solution)'
     arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
-    zipAfterPublish: true
+    workingDirectory: '$(System.DefaultWorkingDirectory)\src\services\Payment.API'
+
 
 - task: PublishBuildArtifacts@1
   inputs:
@@ -117,4 +117,4 @@ steps:
     azureSubscription: 'Azure Connection'
     appType: 'webApp'
     WebAppName: '$(webSiteName)'
-    packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
+    packageForLinux: '$(System.ArtifactStagingDirectory)/**/*.zip'
