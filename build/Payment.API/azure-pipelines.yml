@@ -110,6 +110,6 @@ steps:
   inputs:
     azureSubscription: 'Azure Connection'
     appType: 'webApp'
-    appName: 
+    appName: $(webSiteName)
     package: '$(System.DefaultWorkingDirectory)/**/*.zip'
     deploymentMethod: 'auto'
