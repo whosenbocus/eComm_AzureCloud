@@ -39,13 +39,7 @@ steps:
     command: 'publish'
     publishWebProjects: false
     projects: '**/Payment.API.csproj'
-    arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
-
-- task: PublishBuildArtifacts@1
-  inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    ArtifactName: 'PaymentAPI'
-    publishLocation: 'Container'
+    arguments: '--configuration $(BuildConfiguration) --output $(Build.DefaultWorkingDirectory)/Output'
 
 - task: AzurePowerShell@5
   inputs:
@@ -111,3 +105,11 @@ steps:
     azurePowerShellVersion: 'LatestVersion'
     pwsh: true
 
+
+- task: AzureWebApp@1
+  inputs:
+    azureSubscription: 'Azure Connection'
+    appType: 'webApp'
+    appName: 
+    package: '$(System.DefaultWorkingDirectory)/**/*.zip'
+    deploymentMethod: 'auto'
