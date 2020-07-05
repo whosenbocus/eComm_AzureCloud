@@ -4,18 +4,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Azure.Cosmos.Table;
-
-
+using Microsoft.Extensions.Configuration;
 
 namespace Payment.API.Infrastructure.Repositories
 {
     public class AzureTablePaymentRepository : IPaymentRepository
     {
         private readonly CloudTable table;
-
-        public AzureTablePaymentRepository()
+        public IConfiguration Configuration { get; }
+        public AzureTablePaymentRepository(IConfiguration configuration)
         {
-            var account = CloudStorageAccount.Parse("[connection string]");
+            Configuration = configuration;
+            var account = CloudStorageAccount.Parse(Configuration["StorageConnectionString"]);
             var client = account.CreateCloudTableClient();
             table = client.GetTableReference("Payment");
             table.CreateIfNotExists();
