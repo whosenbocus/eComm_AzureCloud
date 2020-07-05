@@ -41,39 +41,44 @@
             }
         },
         {
-            "name": "PaymentPlan",
-            "type": "Microsoft.Web/serverfarms",
-            "apiVersion": "2018-02-01",
-            "location": "[resourceGroup().location]",
-            "sku": {
-                "name": "F1",
-                "capacity": 1
-            },
-            "tags": {
-                "displayName": "PaymentPlan"
-            },
-            "properties": {
-                "name": "PaymentPlan"
-            }
-        },
-        {
-            "name": "[variables('WebName')]",
-            "type": "Microsoft.Web/sites",
             "apiVersion": "2018-11-01",
+            "name": "[variables('WebName')]",
             "location": "[resourceGroup().location]",
-            "tags": {
-                "[concat('hidden-related:', resourceGroup().id, '/providers/Microsoft.Web/serverfarms/PaymentPlan')]": "Resource",
-                "displayName": "[variables('WebName')]"
-            },
+            "type": "Microsoft.Web/sites",
             "dependsOn": [
-                "[resourceId('Microsoft.Web/serverfarms', 'PaymentPlan')]"
+                "[concat('Microsoft.Web/serverfarms/', 'PaymentPlan')]"
             ],
             "properties": {
                 "name": "[variables('WebName')]",
-                "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', 'PaymentPlan')]"
+                "siteConfig": {
+                    "appSettings": [],
+                    "linuxFxVersion": "DOTNETCORE|3.1",
+                    "alwaysOn": false
+                },
+                "hostingEnvironment": "",
+                "clientAffinityEnabled": false
             }
-        }    
-        
+        },
+        {
+            "apiVersion": "2018-02-01",
+            "name": "PaymentPlan",
+            "type": "Microsoft.Web/serverfarms",
+            "location": "[resourceGroup().location]",
+            "kind": "linux",
+            "dependsOn": [],
+            "properties": {
+                "name": "PaymentPlan",
+                "workerSize": "0",
+                "workerSizeId": "0",
+                "numberOfWorkers": "1",
+                "reserved": true,
+                "hostingEnvironment": ""
+            },
+            "sku": {
+                "Tier": "Free",
+                "Name": "F1"
+            }
+        }  
     ],
     "outputs": {
     "storageEndpoint": {
