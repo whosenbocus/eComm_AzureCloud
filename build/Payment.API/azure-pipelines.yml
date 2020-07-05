@@ -11,6 +11,7 @@ trigger:
     include:
       - src/services/Payment.API/*
       - build/Payment.API/azure-pipelines.yml
+      - deploy/Azure/Payment.API/*
 
 pool:
   vmImage: 'windows-latest'
