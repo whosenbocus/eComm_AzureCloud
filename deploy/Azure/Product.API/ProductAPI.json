@@ -1,0 +1,98 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+      "storage": {
+        "type": "string"
+      },
+      "ApplicationInsight": {
+        "type": "string"
+      }
+    },
+    "variables": {
+    
+        "StorageName": "[toLower(concat(parameters('storage'), take(uniqueString(resourceGroup().id),5)))]",
+        "WebName": "[toLower(concat('PaymentAPI', uniqueString(resourceGroup().id)))]"
+    },
+    "resources": [
+      {
+        "type": "Microsoft.Storage/storageAccounts",
+        "name": "[variables('StorageName')]",
+        "apiVersion": "2016-01-01",
+        "location": "[resourceGroup().location]",
+        "tags": {
+          "displayName": "[parameters('storage')]"
+        },
+        "sku": {
+          "name": "Standard_LRS"
+        },
+        "kind": "Storage"
+      },
+      {
+            "name": "[parameters('ApplicationInsight')]",
+            "type": "microsoft.insights/components",
+            "apiVersion": "2015-05-01",
+            "location": "[resourceGroup().location]",
+            "kind":"web",
+            "properties": {
+                "ApplicationId": "[parameters('ApplicationInsight')]",
+                "Application_Type": "web",
+                "Flow_Type": "Bluefield"
+            }
+        },
+        {
+            "apiVersion": "2018-11-01",
+            "name": "[variables('WebName')]",
+            "location": "[resourceGroup().location]",
+            "type": "Microsoft.Web/sites",
+            "dependsOn": [
+                "[concat('Microsoft.Web/serverfarms/', 'PaymentPlan')]"
+            ],
+            "properties": {
+                "name": "[variables('WebName')]",
+                "siteConfig": {
+                    "appSettings": [],
+                    "linuxFxVersion": "DOTNETCORE|3.1",
+                    "alwaysOn": false
+                },
+                "serverFarmId": "[concat('/subscriptions/', subscription().subscriptionId ,'/resourcegroups/eCommAzure/providers/Microsoft.Web/serverfarms/PaymentPlan')]",
+                "hostingEnvironment": "",
+                "clientAffinityEnabled": false
+            }
+        },
+        {
+            "apiVersion": "2018-02-01",
+            "name": "PaymentPlan",
+            "type": "Microsoft.Web/serverfarms",
+            "location": "[resourceGroup().location]",
+            "kind": "linux",
+            "dependsOn": [],
+            "properties": {
+                "name": "PaymentPlan",
+                "workerSize": "0",
+                "workerSizeId": "0",
+                "numberOfWorkers": "1",
+                "reserved": true,
+                "hostingEnvironment": ""
+            },
+            "sku": {
+                "Tier": "Free",
+                "Name": "F1"
+            }
+        }  
+    ],
+    "outputs": {
+    "storageEndpoint": {
+      "type": "string",
+      "value": "[variables('StorageName')]"
+    },
+    "webSiteName": {
+      "type": "string",
+      "value": "[variables('WebName')]"
+    },
+    "ApplicationInsight": {
+      "type": "string",
+      "value": "[parameters('ApplicationInsight')]"
+    }
+  }
+  }
