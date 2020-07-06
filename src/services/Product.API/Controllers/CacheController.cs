@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Product.API.Infrastructure.Repository;
+using Product.API.Model;
 
 namespace Product.API.Controllers
 {
@@ -10,19 +12,24 @@ namespace Product.API.Controllers
     [ApiController]
     public class CacheController : ControllerBase
     {
-        //POST - Pass URL and detail
-        // Save into Storage Queue
-        // AZ function download and save image in container, insert record in SQL and update cache
+        private readonly ICacheRepository cache; 
+        public CacheController(ICacheRepository _cache)
+        {
+            cache = _cache;
+        }
+        [HttpGet]
+        public async Task<ActionResult<CacheObject>> GetCache(string metadata)
+        {
+            var message = cache.GetCache(metadata);
+            return Ok(message);
+        }
 
-
-        //DEL - Delete Image
-        //Remove from Storage Container and re update cache
-        //check if still in queue and remove
-
-
-        //GET - Get all Details
-        //Get information from Cache
-
+        [HttpPost]
+        public async Task<ActionResult> SaveCache(CacheObject message)
+        {
+            cache.SaveCache(message,message.Metadata);
+            return Ok();
+        }
 
     }
 }

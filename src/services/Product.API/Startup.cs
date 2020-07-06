@@ -28,6 +28,7 @@ namespace Product.API
         {
             services.AddControllers().AddNewtonsoftJson();
             services.AddScoped<IQueueRepository, QueueManagement>();
+            services.AddScoped<ICacheRepository, CacheManagement>();
 
         }
 
