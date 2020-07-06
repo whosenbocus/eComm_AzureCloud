@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Product.API.Infrastructure.Repository;
 
 namespace Product.API
 {
@@ -25,7 +26,9 @@ namespace Product.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson();
+            services.AddScoped<IQueueRepository, QueueManagement>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
