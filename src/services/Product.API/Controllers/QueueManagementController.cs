@@ -48,15 +48,24 @@ namespace Product.API.Controllers
         [HttpPut]
         public async Task<ActionResult> UpdateQueue(QueueMessage message)
         {
-            await queue.UpdateMessage(message);
+            queue.UpdateMessage(message);
             return Ok();
         }
 
         [HttpPost]
         public async Task<ActionResult> SaveQueue(QueueMessage message)
         {
-            await queue.SaveMessage(message);
+            queue.SaveMessage(message);
             return Ok();
         }
+
+
+        [HttpDelete]
+        public async Task<ActionResult> DeleteQueue()
+        {
+            queue.DeleteMessage();
+            return Ok();
+        }
+
     }
 }

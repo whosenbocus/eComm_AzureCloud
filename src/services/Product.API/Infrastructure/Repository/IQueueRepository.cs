@@ -9,7 +9,9 @@ namespace Product.API.Infrastructure.Repository
     public interface IQueueRepository
     {
         Task<QueueMessage> GetMessage();
-        Task SaveMessage(QueueMessage message);
-        Task UpdateMessage(QueueMessage message);
+        void SaveMessage(QueueMessage message);
+        void UpdateMessage(QueueMessage message);
+
+        void DeleteMessage();
     }
 }

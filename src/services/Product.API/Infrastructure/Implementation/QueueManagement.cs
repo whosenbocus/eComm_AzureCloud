@@ -16,7 +16,7 @@ public class QueueManagement : IQueueRepository
     {
         Configuration = configuration;
         string connectionString = Configuration["StorageConnectionString"];
-        QueueClient queueClient = new QueueClient(connectionString, "Product");
+        queueClient = new QueueClient(connectionString, "product");
         queueClient.CreateIfNotExists();
     }
 
@@ -32,17 +32,16 @@ public class QueueManagement : IQueueRepository
         return null;
     }
 
-    public Task SaveMessage(Product.API.Model.QueueMessage message)
+    public void SaveMessage(Product.API.Model.QueueMessage message)
     {
         string Jsonmessage = JsonConvert.SerializeObject(message);
         if (queueClient.Exists())
         {
             queueClient.SendMessage(Jsonmessage);
         }
-        return null;
     }
 
-    public Task UpdateMessage(Product.API.Model.QueueMessage messages)
+    public void UpdateMessage(Product.API.Model.QueueMessage messages)
     {
         if (queueClient.Exists())
         {
@@ -56,6 +55,15 @@ public class QueueManagement : IQueueRepository
                     TimeSpan.FromSeconds(60.0)  // Make it invisible for another 60 seconds
                 );
         }
-        return null;
+    }
+
+    public void DeleteMessage()
+    {
+        if (queueClient.Exists())
+        {
+            Azure.Storage.Queues.Models.QueueMessage[] retrievedMessage = queueClient.ReceiveMessages();
+            Console.WriteLine($"Pop Receipt is {retrievedMessage[0].PopReceipt}");
+            queueClient.DeleteMessage(retrievedMessage[0].MessageId, retrievedMessage[0].PopReceipt);
+        }
     }
 }
