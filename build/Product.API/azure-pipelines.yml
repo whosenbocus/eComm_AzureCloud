@@ -90,10 +90,10 @@ steps:
     pwsh: true
 
 
-# - task: AzureWebApp@1
-#   inputs:
-#     azureSubscription: 'Azure Connection'
-#     appType: 'webApp'
-#     appName: $(webSiteName)
-#     package: '$(System.DefaultWorkingDirectory)/**/*.zip'
-#     deploymentMethod: 'auto'
+- task: AzureWebApp@1
+  inputs:
+    azureSubscription: 'Azure Connection'
+    appType: 'webApp'
+    appName: $(webSiteName)
+    package: '$(System.DefaultWorkingDirectory)/**/*.zip'
+    deploymentMethod: 'auto'
