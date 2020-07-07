@@ -4,12 +4,19 @@
     "parameters": {
       "storage": {
         "type": "string"
-      }
+      },
+      "accessPolicies": {
+            "type": "array"
+        },
+        "networkAcls": {
+            "type": "object"
+        }
     },
     "variables": {
     
         "StorageName": "[toLower(concat(parameters('storage'), take(uniqueString(resourceGroup().id),5)))]",
-        "WebName": "[toLower(concat('ProductAPI', uniqueString(resourceGroup().id)))]"
+        "WebName": "[toLower(concat('ProductAPI', uniqueString(resourceGroup().id)))]",
+        "VaultName": "[toLower(concat('ProductAPI', uniqueString(resourceGroup().id)))]"
     },
     "resources": [
       {
@@ -46,6 +53,29 @@
           }
       },
       {
+            "apiVersion": "2016-10-01",
+            "name": "[variables('VaultName')]",
+            "location": "[resourceGroup().location]",
+            "type": "Microsoft.KeyVault/vaults",
+            "properties": {
+                "enabledForDeployment": false,
+                "enabledForTemplateDeployment": false,
+                "enabledForDiskEncryption": false,
+                "enableRbacAuthorization": false,
+                "accessPolicies": "[parameters('accessPolicies')]",
+                "tenantId": "[subscription().tenantId]",
+                "sku": {
+                    "name": "Standard",
+                    "family": "A"
+                },
+                "enableSoftDelete": true,
+                "softDeleteRetentionInDays": 90,
+                "networkAcls": "[parameters('networkAcls')]"
+            },
+            "tags": {},
+            "dependsOn": []
+        },
+      {
           "apiVersion": "2018-02-01",
           "name": "ProductPlan",
           "type": "Microsoft.Web/serverfarms",
@@ -74,6 +104,10 @@
     "webSiteName": {
       "type": "string",
       "value": "[variables('WebName')]"
+    },
+    "keyVault": {
+      "type": "string",
+      "value": "[variables('VaultName')]"
     }
   }
   }

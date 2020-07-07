@@ -75,29 +75,19 @@ steps:
     filePath: '$(System.DefaultWorkingDirectory)/deploy/parse_arm_deployment_output.ps1'
     arguments: '-ArmOutputString ''$(armOutputString)'' -ErrorAction Stop'
 
-# - task: AzurePowerShell@5
-#   inputs:
-#     azureSubscription: 'Azure Connection'
-#     ScriptType: 'InlineScript'
-#     Inline: |
-#       $ResourceGroup = 'eCommAzure'
-#       $saKey = (Get-AzStorageAccountKey -ResourceGroupName $ResourceGroup -Name $(storageEndpoint))[0].Value
-#       $SAConnectionString = "DefaultEndpointsProtocol=https;AccountName=$(storageEndpoint);AccountKey=$saKey;EndpointSuffix=core.windows.net"
-#       $ApplicationInsight = Get-AzApplicationInsights -ResourceGroupName $ResourceGroup -Name $(applicationInsight)
+- task: AzurePowerShell@5
+  inputs:
+    azureSubscription: 'Azure Connection'
+    ScriptType: 'InlineScript'
+    Inline: |
+      $ResourceGroup = 'eCommAzure'
+      $saKey = (Get-AzStorageAccountKey -ResourceGroupName $ResourceGroup -Name $(storageEndpoint))[0].Value
+      $SAConnectionString = "DefaultEndpointsProtocol=https;AccountName=$(storageEndpoint);AccountKey=$saKey;EndpointSuffix=core.windows.net"
       
-#       $web = Get-AzWebApp -ResourceGroupName $ResourceGroup -Name $(webSiteName)
-#       $appSettingList = $web.SiteConfig.AppSettings
-#       $hash = @{}
-#       ForEach ($kvp in $appSettingList) {
-#           $hash[$kvp.Name] = $kvp.Value
-#       }
-      
-#       $hash['StorageConnectionString'] = $SAConnectionString
-#       $hash['APPINSIGHTS_INSTRUMENTATIONKEY'] = $ApplicationInsight.InstrumentationKey
-      
-#       Set-AzWebAppSlot -ResourceGroupName $ResourceGroup -Name $(webSiteName) -AppSettings $hash -Slot production
-#     azurePowerShellVersion: 'LatestVersion'
-#     pwsh: true
+      $secretvalue = ConvertTo-SecureString $SAConnectionString -AsPlainText -Force
+      $secret = Set-AzKeyVaultSecret -VaultName $(keyVault) -Name StorageAccountConnectionString -SecretValue $secretvalue
+    azurePowerShellVersion: 'LatestVersion'
+    pwsh: true
 
 
 # - task: AzureWebApp@1
