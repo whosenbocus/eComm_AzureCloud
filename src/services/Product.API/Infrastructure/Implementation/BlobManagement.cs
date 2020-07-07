@@ -19,37 +19,42 @@ public class BlobManagement : IBlobRepository
     public IConfiguration Configuration { get; }
 
     private readonly BlobServiceClient blobServiceClient;
-    private readonly BlobContainerClient containerClient;
+    private readonly BlobContainerClient container;
     public BlobManagement(IConfiguration configuration)
     {
         Configuration = configuration;
         string connectionString = Configuration["BlobConnectionString"];
-        blobServiceClient = new BlobServiceClient(connectionString);
-        string containerName = "quickstartblobs" + Guid.NewGuid().ToString();
-        containerClient = blobServiceClient.CreateBlobContainer(containerName);
+        string containerName = "product";
+        container = new BlobContainerClient(connectionString,containerName);
+        container.CreateIfNotExists();
 
     }
 
     public void SaveBlob(string url)
     {
-        string localFilename = url.Split('\\').First();
+        string localFilename = url.Split('/').Last();
         using(WebClient client = new WebClient())
         {
             client.DownloadFile(url, localFilename);
         }
 
-        BlobClient blobClient = containerClient.GetBlobClient(localFilename);
+        BlobClient blobClient = container.GetBlobClient(localFilename);
 
 
-        using FileStream uploadFileStream = File.OpenRead(localFilename);
-        blobClient.UploadAsync(uploadFileStream, true);
-        uploadFileStream.Close();
+        using (var fileStream = System.IO.File.OpenRead(localFilename))
+        {
+            blobClient.Upload(fileStream);
+            fileStream.Close();
+        }
+
+
+
     }
 
     public IEnumerable<string> RetrieveBlob()
     {
         List<string> blobs = new List<string>();
-        foreach (BlobItem blobItem in containerClient.GetBlobs())
+        foreach (BlobItem blobItem in container.GetBlobs())
         {
             blobs.Add(blobItem.Name);
         }
@@ -58,6 +63,6 @@ public class BlobManagement : IBlobRepository
 
     public void DeleteBlob()
     {
-        containerClient.DeleteAsync();
+        container.DeleteAsync();
     }
 }
