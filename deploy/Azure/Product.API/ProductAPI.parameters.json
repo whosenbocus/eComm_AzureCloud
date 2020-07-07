@@ -57,7 +57,51 @@
                         "DeleteIssuers"
                     ]
                 }
-            }
+            },
+            {
+              "objectId": "f39e6641-d7ee-4be2-a3c8-7641da587fcc",
+              "tenantId": "03e3bc21-c1cd-47f8-ba88-07837132e15b",
+              "permissions": {
+                  "keys": [
+                      "Get",
+                      "List",
+                      "Update",
+                      "Create",
+                      "Import",
+                      "Delete",
+                      "Recover",
+                      "Backup",
+                      "Restore"
+                  ],
+                  "secrets": [
+                      "Get",
+                      "List",
+                      "Set",
+                      "Delete",
+                      "Recover",
+                      "Backup",
+                      "Restore"
+                  ],
+                  "certificates": [
+                      "Get",
+                      "List",
+                      "Update",
+                      "Create",
+                      "Import",
+                      "Delete",
+                      "Recover",
+                      "Backup",
+                      "Restore",
+                      "ManageContacts",
+                      "ManageIssuers",
+                      "GetIssuers",
+                      "ListIssuers",
+                      "SetIssuers",
+                      "DeleteIssuers"
+                  ]
+              }
+          },
+
         ]
     }
     }
