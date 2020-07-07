@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Product.API.Infrastructure.Repository;
+using Product.API.Model;
 
 namespace Product.API.Controllers
 {
@@ -10,19 +12,32 @@ namespace Product.API.Controllers
     [ApiController]
     public class BlobManagementController : ControllerBase
     {
-        //POST - Pass URL and detail
-        // Save into Storage Queue
-        // AZ function download and save image in container, insert record in SQL and update cache
+        private readonly IBlobRepository blob; 
+        public BlobManagementController(IBlobRepository _blob)
+        {
+            blob = _blob;
+        }
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<string>>> GetBlob()
+        {
+            var blobs = blob.RetrieveBlob();
+            return Ok(blobs);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> SaveBlob(string url)
+        {
+            blob.SaveBlob(url);
+            return Ok();
+        }
 
 
-        //DEL - Delete Image
-        //Remove from Storage Container and re update cache
-        //check if still in queue and remove
-
-
-        //GET - Get all Details
-        //Get information from Cache
-
+        [HttpDelete]
+        public async Task<ActionResult> DeleteBlob()
+        {
+            blob.DeleteBlob();
+            return Ok();
+        }
 
     }
 }
