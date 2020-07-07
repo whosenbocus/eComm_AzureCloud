@@ -3,10 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
       "storage": {
-        "value": "paymentstorage"
-      },
-      "ApplicationInsight": {
-        "value": "payment.API.AI"
+        "value": "productstorage"
       }
     }
   }
