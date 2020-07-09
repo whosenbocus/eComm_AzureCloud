@@ -80,6 +80,7 @@ steps:
     azureSubscription: 'Azure Connection'
     ScriptType: 'InlineScript'
     Inline: |
+      write-host (whoami)
       $ResourceGroup = 'eCommAzure'
       $saKey = (Get-AzStorageAccountKey -ResourceGroupName $ResourceGroup -Name $(storageEndpoint))[0].Value
       $SAConnectionString = "DefaultEndpointsProtocol=https;AccountName=$(storageEndpoint);AccountKey=$saKey;EndpointSuffix=core.windows.net"
