@@ -16,7 +16,7 @@
     
         "StorageName": "[toLower(concat(parameters('storage'), take(uniqueString(resourceGroup().id),5)))]",
         "WebName": "[toLower(concat('ProductAPI', uniqueString(resourceGroup().id)))]",
-        "VaultName": "[toLower(concat('ProductAPI', uniqueString(resourceGroup().id)))]"
+        "VaultName": "[toLower(concat('ProductKV', uniqueString(resourceGroup().id)))]"
     },
     "resources": [
       {
@@ -68,8 +68,6 @@
                     "name": "Standard",
                     "family": "A"
                 },
-                "enableSoftDelete": true,
-                "softDeleteRetentionInDays": 90,
                 "networkAcls": "[parameters('networkAcls')]"
             },
             "tags": {},
