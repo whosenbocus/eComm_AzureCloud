@@ -87,6 +87,12 @@ steps:
       
       $secretvalue = ConvertTo-SecureString $SAConnectionString -AsPlainText -Force
       $secret = Set-AzKeyVaultSecret -VaultName $(keyVault) -Name StorageAccountConnectionString -SecretValue $secretvalue
+
+      Set-AzWebApp -ResourceGroupName eCommAzure -Name productapicazwkhd2krat2 -AssignIdentity $true
+
+      $sp = Get-AzADServicePrincipal -DisplayName $(webSiteName)
+      Set-AzKeyVaultAccessPolicy -ObjectId $sp.Id -VaultName $(keyVault) -PermissionsToSecrets list,get
+
     azurePowerShellVersion: 'LatestVersion'
     pwsh: true
 
