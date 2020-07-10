@@ -15,7 +15,7 @@ public class QueueManagement : IQueueRepository
     public QueueManagement(IConfiguration configuration)
     {
         Configuration = configuration;
-        string connectionString = Configuration["StorageConnectionString"];
+        string connectionString = Configuration["StorageAccountConnectionString"];
         queueClient = new QueueClient(connectionString, "product");
         queueClient.CreateIfNotExists();
     }

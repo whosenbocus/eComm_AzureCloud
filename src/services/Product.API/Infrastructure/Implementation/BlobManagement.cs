@@ -23,7 +23,7 @@ public class BlobManagement : IBlobRepository
     public BlobManagement(IConfiguration configuration)
     {
         Configuration = configuration;
-        string connectionString = Configuration["BlobConnectionString"];
+        string connectionString = Configuration["StorageAccountConnectionString"];
         string containerName = "product";
         container = new BlobContainerClient(connectionString,containerName);
         container.CreateIfNotExists();
