@@ -90,8 +90,8 @@ steps:
 
       Set-AzWebApp -ResourceGroupName eCommAzure -Name productapicazwkhd2krat2 -AssignIdentity $true
 
-      $sp = Get-AzADServicePrincipal -DisplayName $(webSiteName)
-      Set-AzKeyVaultAccessPolicy -ObjectId $sp.Id -VaultName $(keyVault) -PermissionsToSecrets list,get
+      #$sp = Get-AzADServicePrincipal -DisplayName $(webSiteName)
+      #Set-AzKeyVaultAccessPolicy -ObjectId $sp.Id -VaultName $(keyVault) -PermissionsToSecrets list,get
 
     azurePowerShellVersion: 'LatestVersion'
     pwsh: true
