@@ -10,6 +10,7 @@ trigger:
   paths:
     include:
       - src/services/Product.API/*
+      - src/services/Product.Function/*
       - build/Product.API/azure-pipelines.yml
       - deploy/Azure/Product.API/*
 
