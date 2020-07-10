@@ -10,10 +10,11 @@ using Newtonsoft.Json;
 
 namespace Product.Function
 {
+    [StorageAccount("StorageAccountConnectionString")]
     public static class QueueTrigger
     {
         [FunctionName("QueueTrigger")]
-        public static void Run([QueueTrigger("product")]string myQueueItem, [Blob("product",System.IO.FileAccess.Write,Connection = "AzureWebJobsStorage")]CloudBlobContainer output, ILogger log)
+        public static void Run([QueueTrigger("product")]string myQueueItem, [Blob("product",System.IO.FileAccess.Write)]CloudBlobContainer output, ILogger log)
         {
             QueueMessage message = JsonConvert.DeserializeObject<QueueMessage>(myQueueItem);
 
@@ -35,8 +36,6 @@ namespace Product.Function
             cloudBlockBlob.UploadFromStream(webResponse.GetResponseStream());
                 
 
-
-            log.LogInformation($"C# Queue trigger function processed: {myQueueItem}");
         }
     }
 }
