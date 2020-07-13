@@ -115,6 +115,8 @@ steps:
 
       Set-AzWebApp -ResourceGroupName eCommAzure -Name productapicazwkhd2krat2 -AssignIdentity $true
 
+      Set-AzWebApp -ResourceGroupName eCommAzure -Name productfncazwkhd2krat2 -AssignIdentity $true
+
       #$sp = Get-AzADServicePrincipal -DisplayName $(webSiteName)
       #Set-AzKeyVaultAccessPolicy -ObjectId $sp.Id -VaultName $(keyVault) -PermissionsToSecrets list,get
 
