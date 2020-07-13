@@ -19,6 +19,7 @@ pool:
 
 variables:
   solution: 'src/services/Product.API/Product.API.csproj'
+  function: 'src\services\Product.Function/Product.Function.csproj'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
 
@@ -42,6 +43,29 @@ steps:
     publishWebProjects: false
     projects: '**/Product.API.csproj'
     arguments: '--configuration $(BuildConfiguration) --output $(Build.DefaultWorkingDirectory)/Output'
+
+
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'restore'
+    projects: '$(function)'
+    feedsToUse: 'select'
+
+
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'build'
+    projects: '$(function)'
+
+
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'publish'
+    publishWebProjects: false
+    projects: '**/Product.Function.csproj'
+    arguments: '--configuration $(BuildConfiguration) --output $(Build.DefaultWorkingDirectory)/Output'
+
+
 
 - task: AzurePowerShell@5
   inputs:
@@ -105,3 +129,5 @@ steps:
     appName: $(webSiteName)
     package: '$(System.DefaultWorkingDirectory)/**/*.zip'
     deploymentMethod: 'auto'
+
+
