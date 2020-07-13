@@ -42,7 +42,7 @@ steps:
     command: 'publish'
     publishWebProjects: false
     projects: '**/Product.API.csproj'
-    arguments: '--configuration $(BuildConfiguration) --output $(Build.DefaultWorkingDirectory)/Output'
+    arguments: '--configuration $(BuildConfiguration) --output $(Build.DefaultWorkingDirectory)/Output/API'
 
 
 - task: DotNetCoreCLI@2
@@ -63,7 +63,7 @@ steps:
     command: 'publish'
     publishWebProjects: false
     projects: '**/Product.Function.csproj'
-    arguments: '--configuration $(BuildConfiguration) --output $(Build.DefaultWorkingDirectory)/Output'
+    arguments: '--configuration $(BuildConfiguration) --output $(Build.DefaultWorkingDirectory)/Output/Function'
 
 
 
@@ -127,7 +127,14 @@ steps:
     azureSubscription: 'Azure Connection'
     appType: 'webApp'
     appName: $(webSiteName)
-    package: '$(System.DefaultWorkingDirectory)/**/*.zip'
+    package: '$(Build.DefaultWorkingDirectory)/Output/API/*.zip'
     deploymentMethod: 'auto'
 
 
+- task: AzureFunctionApp@1
+  inputs:
+    azureSubscription: 'Azure Connection'
+    appType: 'functionAppLinux'
+    appName: 'productfncazwkhd2krat2'
+    package: '$(Build.DefaultWorkingDirectory)/Output/function/*.zip'
+    runtimeStack: 'DOCKER|microsoft/azure-functions-dotnet-core2.0:2.0'
