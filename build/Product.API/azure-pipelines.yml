@@ -9,8 +9,7 @@ trigger:
       - master
   paths:
     include:
-      - src/services/Product.API/*
-      - src/services/Product.Function/*
+      - src/services/Product/*
       - build/Product.API/azure-pipelines.yml
       - deploy/Azure/Product.API/*
 
@@ -18,8 +17,8 @@ pool:
   vmImage: 'windows-latest'
 
 variables:
-  solution: 'src/services/Product.API/Product.API.csproj'
-  function: 'src\services\Product.Function/Product.Function.csproj'
+  solution: 'src/Product/services/Product.API/Product.API.csproj'
+  function: 'src/Product/services/Product.Function/Product.Function.csproj'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
 
