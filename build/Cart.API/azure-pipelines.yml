@@ -1,0 +1,140 @@
+# ASP.NET Core (.NET Framework)
+# Build and test ASP.NET Core projects targeting the full .NET Framework.
+# Add steps that publish symbols, save build artifacts, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
+
+trigger:
+  branches:
+    include:
+      - master
+  paths:
+    include:
+      - src/services/Cart/*
+      - build/Cart.API/azure-pipelines.yml
+      - deploy/Azure/Cart.API/*
+
+pool:
+  vmImage: 'windows-latest'
+
+variables:
+  solution: 'src/services/Cart/Cart.API/Cart.API.csproj'
+  buildPlatform: 'Any CPU'
+  buildConfiguration: 'Release'
+
+steps:
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'restore'
+    projects: '$(solution)'
+    feedsToUse: 'select'
+
+
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'build'
+    projects: '$(solution)'
+
+
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'publish'
+    publishWebProjects: false
+    projects: '**/Product.API.csproj'
+    arguments: '--configuration $(BuildConfiguration) --output $(Build.DefaultWorkingDirectory)/Output/API'
+
+
+# - task: DotNetCoreCLI@2
+#   inputs:
+#     command: 'restore'
+#     projects: '$(function)'
+#     feedsToUse: 'select'
+
+
+# - task: DotNetCoreCLI@2
+#   inputs:
+#     command: 'build'
+#     projects: '$(function)'
+
+
+# - task: DotNetCoreCLI@2
+#   inputs:
+#     command: 'publish'
+#     publishWebProjects: false
+#     projects: '**/Product.Function.csproj'
+#     arguments: '--configuration $(BuildConfiguration) --output $(Build.DefaultWorkingDirectory)/Output/Function'
+
+
+
+# - task: AzurePowerShell@5
+#   inputs:
+#     azureSubscription: 'Azure Connection'
+#     ScriptType: 'InlineScript'
+#     Inline: |
+#       if((Get-AzResourceGroup | where {$_.ResourceGroupName -eq 'eCommAzure'}).Length -eq 0)
+#       {
+#           New-AzResourceGroup -Name eCommAzure -Location eastus
+#       }
+#     azurePowerShellVersion: 'LatestVersion'
+#     pwsh: true
+
+
+# - task: AzureResourceManagerTemplateDeployment@3
+#   inputs:
+#     deploymentScope: 'Resource Group'
+#     azureResourceManagerConnection: 'Azure Connection'
+#     subscriptionId: '9188b8f6-6bff-4fd2-aa50-710ea416c84a'
+#     action: 'Create Or Update Resource Group'
+#     resourceGroupName: 'eCommAzure'
+#     location: 'East US'
+#     templateLocation: 'URL of the file'
+#     csmFileLink: 'https://raw.githubusercontent.com/whosenbocus/eComm_AzureCloud/master/deploy/Azure/Product.API/ProductAPI.json'
+#     csmParametersFileLink: 'https://raw.githubusercontent.com/whosenbocus/eComm_AzureCloud/master/deploy/Azure/Product.API/ProductAPI.parameters.json'
+#     deploymentMode: 'Incremental'
+#     deploymentOutputs: 'armOutputString'
+
+
+# - task: PowerShell@2
+#   inputs:
+#     filePath: '$(System.DefaultWorkingDirectory)/deploy/parse_arm_deployment_output.ps1'
+#     arguments: '-ArmOutputString ''$(armOutputString)'' -ErrorAction Stop'
+
+# - task: AzurePowerShell@5
+#   inputs:
+#     azureSubscription: 'Azure Connection'
+#     ScriptType: 'InlineScript'
+#     Inline: |
+#       write-host (whoami)
+#       $ResourceGroup = 'eCommAzure'
+#       $saKey = (Get-AzStorageAccountKey -ResourceGroupName $ResourceGroup -Name $(storageEndpoint))[0].Value
+#       $SAConnectionString = "DefaultEndpointsProtocol=https;AccountName=$(storageEndpoint);AccountKey=$saKey;EndpointSuffix=core.windows.net"
+      
+#       $secretvalue = ConvertTo-SecureString $SAConnectionString -AsPlainText -Force
+#       $secret = Set-AzKeyVaultSecret -VaultName $(keyVault) -Name StorageAccountConnectionString -SecretValue $secretvalue
+
+#       Set-AzWebApp -ResourceGroupName eCommAzure -Name productapicazwkhd2krat2 -AssignIdentity $true
+
+#       Set-AzWebApp -ResourceGroupName eCommAzure -Name productfncazwkhd2krat2 -AssignIdentity $true
+
+#       #$sp = Get-AzADServicePrincipal -DisplayName $(webSiteName)
+#       #Set-AzKeyVaultAccessPolicy -ObjectId $sp.Id -VaultName $(keyVault) -PermissionsToSecrets list,get
+
+#     azurePowerShellVersion: 'LatestVersion'
+#     pwsh: true
+
+
+# - task: AzureWebApp@1
+#   inputs:
+#     azureSubscription: 'Azure Connection'
+#     appType: 'webApp'
+#     appName: $(webSiteName)
+#     package: '$(Build.DefaultWorkingDirectory)/Output/API/*.zip'
+#     deploymentMethod: 'auto'
+
+
+# - task: AzureFunctionApp@1
+#   inputs:
+#     azureSubscription: 'Azure Connection'
+#     appType: 'functionAppLinux'
+#     appName: 'productfncazwkhd2krat2'
+#     package: '$(Build.DefaultWorkingDirectory)/Output/function/*.zip'
+#     runtimeStack: 'DOCKER|microsoft/azure-functions-dotnet-core2.0:2.0'

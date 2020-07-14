@@ -17,8 +17,8 @@ pool:
   vmImage: 'windows-latest'
 
 variables:
-  solution: 'src/Product/services/Product.API/Product.API.csproj'
-  function: 'src/Product/services/Product.Function/Product.Function.csproj'
+  solution: 'src/services/Product/Product.API/Product.API.csproj'
+  function: 'src/services/Product/Product.Function/Product.Function.csproj'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
 
