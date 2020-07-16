@@ -62,7 +62,7 @@ steps:
       azureSubscription: 'Azure Connection'
       scriptType: 'pscore'
       scriptLocation: 'inlineScript'
-      inlineScript: 'az acr build --image cartapi --registry WHeComm --file DOCKERFILE .'
+      inlineScript: 'az acr build --image cartapi --registry WHeComm --file $(Build.SourcesDirectory)/src/services/Cart/Cart.API/DOCKERFILE .'
       workingDirectory: '$(Build.SourcesDirectory)/src/'
 
 # - task: DotNetCoreCLI@2
