@@ -68,7 +68,7 @@ steps:
   - task: ContainerBuild@0
     inputs:
       dockerRegistryServiceConnection: 'eCommAzure'
-      repository: '$(Build.DefaultWorkingDirectory)/src/services/Cart/Cart.API'
+      repository: 'cartapi'
       Dockerfile: '**/Dockerfile'
 
 # - task: DotNetCoreCLI@2
