@@ -7,8 +7,8 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/core/sdk:2.1-stretch AS build
 WORKDIR /src
-COPY ["src/services/Cart/Cart.API/Cart.API.csproj", "src/services/Cart/Cart.API/"]
-RUN dotnet restore "src/services/Cart/Cart.API/Cart.API.csproj"
+COPY ["services/Cart/Cart.API/Cart.API.csproj", "services/Cart/Cart.API/"]
+RUN dotnet restore "services/Cart/Cart.API/Cart.API.csproj"
 COPY . .
 WORKDIR "/src/services/Cart/Cart.API"
 RUN dotnet build "Cart.API.csproj" -c Release -o /app/build

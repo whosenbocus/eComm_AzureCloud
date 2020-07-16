@@ -63,7 +63,7 @@ steps:
       scriptType: 'pscore'
       scriptLocation: 'inlineScript'
       inlineScript: 'az acr build --image cartapi --registry WHeComm --file DOCKERFILE .'
-      workingDirectory: '$(Build.SourcesDirectory)/src/services/Cart/Cart.API/'
+      workingDirectory: '$(Build.SourcesDirectory)/src/'
 
 # - task: DotNetCoreCLI@2
 #   inputs:
