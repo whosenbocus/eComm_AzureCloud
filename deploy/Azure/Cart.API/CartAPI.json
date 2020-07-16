@@ -1,0 +1,72 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+    //   "storage": {
+    //     "type": "string"
+    //   },
+    //   "accessPolicies": {
+    //         "type": "array"
+    //     },
+    //     "networkAcls": {
+    //         "type": "object"
+    //     }
+    },
+    "variables": {
+        "AzureRegistry": "WHeComm",
+        "WebName": "[toLower(concat('ProductAPI', uniqueString(resourceGroup().id)))]",
+        "VaultName": "[toLower(concat('ProductKV', uniqueString(resourceGroup().id)))]",
+        "funcName": "[toLower(concat('Productfn', uniqueString(resourceGroup().id)))]"
+    },
+    "resources": [
+    {
+            "type": "Microsoft.ContainerRegistry/registries",
+            "apiVersion": "2019-12-01-preview",
+            "name": "[variables('AzureRegistry')]",
+            "location": "eastus",
+            "sku": {
+                "name": "Basic",
+                "tier": "Basic"
+            },
+            "properties": {
+                "adminUserEnabled": false,
+                "policies": {
+                    "quarantinePolicy": {
+                        "status": "disabled"
+                    },
+                    "trustPolicy": {
+                        "type": "Notary",
+                        "status": "disabled"
+                    },
+                    "retentionPolicy": {
+                        "days": 7,
+                        "status": "disabled"
+                    }
+                },
+                "encryption": {
+                    "status": "disabled"
+                },
+                "dataEndpointEnabled": false,
+                "publicNetworkAccess": "Enabled"
+            }
+        }
+    ],
+    "outputs": {
+    "storageEndpoint": {
+      "type": "string",
+      "value": "[variables('AzureRegistry')]"
+    }
+    // "webSiteName": {
+    //   "type": "string",
+    //   "value": "[variables('WebName')]"
+    // },
+    // "keyVault": {
+    //   "type": "string",
+    //   "value": "[variables('VaultName')]"
+    // },
+    // "Function": {
+    //   "type": "string",
+    //   "value": "[variables('funcName')]"
+    // }
+  }
+  }

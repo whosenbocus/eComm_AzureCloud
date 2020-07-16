@@ -1,0 +1,8 @@
+{
+    "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "asdasd",
+    "FUNCTIONS_WORKER_RUNTIME": "dotnet",
+    "StorageAccountConnectionString": "DefaultEndpointsProtocol=https;AccountName=productstoragecazwk;AccountKey=GaALccuhi5JLsEXUyLPpXLOM0YI0MIzQPmG9IwvSsDFv70h1wOwrUlwrP1rhcxdoWmLVLscCqeKqvGu1j8YsTg==;BlobEndpoint=https://productstoragecazwk.blob.core.windows.net/;TableEndpoint=https://productstoragecazwk.table.core.windows.net/;QueueEndpoint=https://productstoragecazwk.queue.core.windows.net/;FileEndpoint=https://productstoragecazwk.file.core.windows.net/"
+  }
+}

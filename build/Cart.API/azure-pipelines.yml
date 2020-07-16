@@ -22,25 +22,63 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
-- task: DotNetCoreCLI@2
-  inputs:
-    command: 'restore'
-    projects: '$(solution)'
-    feedsToUse: 'select'
+  
+  - task: AzurePowerShell@5
+    inputs:
+      azureSubscription: 'Azure Connection'
+      ScriptType: 'InlineScript'
+      Inline: |
+        if((Get-AzResourceGroup | where {$_.ResourceGroupName -eq 'eCommAzure'}).Length -eq 0)
+        {
+            New-AzResourceGroup -Name eCommAzure -Location eastus
+        }
+      azurePowerShellVersion: 'LatestVersion'
+      pwsh: true
+  
+  
+  - task: AzureResourceManagerTemplateDeployment@3
+    inputs:
+      deploymentScope: 'Resource Group'
+      azureResourceManagerConnection: 'Azure Connection'
+      subscriptionId: '9188b8f6-6bff-4fd2-aa50-710ea416c84a'
+      action: 'Create Or Update Resource Group'
+      resourceGroupName: 'eCommAzure'
+      location: 'East US'
+      templateLocation: 'URL of the file'
+      csmFileLink: 'https://raw.githubusercontent.com/whosenbocus/eComm_AzureCloud/master/deploy/Azure/Cart.API/CartAPI.json'
+      csmParametersFileLink: 'https://raw.githubusercontent.com/whosenbocus/eComm_AzureCloud/master/deploy/Azure/Cart.API/CartAPI.parameters.json'
+      deploymentMode: 'Incremental'
+      deploymentOutputs: 'armOutputString'
+  
+  
+  - task: PowerShell@2
+    inputs:
+      filePath: '$(System.DefaultWorkingDirectory)/deploy/parse_arm_deployment_output.ps1'
+      arguments: '-ArmOutputString ''$(armOutputString)'' -ErrorAction Stop'
 
 
-- task: DotNetCoreCLI@2
-  inputs:
-    command: 'build'
-    projects: '$(solution)'
 
 
-- task: DotNetCoreCLI@2
-  inputs:
-    command: 'publish'
-    publishWebProjects: false
-    projects: '**/Product.API.csproj'
-    arguments: '--configuration $(BuildConfiguration) --output $(Build.DefaultWorkingDirectory)/Output/API'
+
+# - task: DotNetCoreCLI@2
+#   inputs:
+#     command: 'restore'
+#     projects: '$(solution)'
+#     feedsToUse: 'select'
+
+
+# - task: DotNetCoreCLI@2
+#   inputs:
+#     command: 'build'
+#     projects: '$(solution)'
+
+
+# - task: DotNetCoreCLI@2
+#   inputs:
+#     command: 'publish'
+#     publishWebProjects: false
+#     projects: '**/Product.API.csproj'
+#     arguments: '--configuration $(BuildConfiguration) --output $(Build.DefaultWorkingDirectory)/Output/API'
 
 
 # - task: DotNetCoreCLI@2
@@ -64,39 +102,6 @@ steps:
 #     arguments: '--configuration $(BuildConfiguration) --output $(Build.DefaultWorkingDirectory)/Output/Function'
 
 
-
-# - task: AzurePowerShell@5
-#   inputs:
-#     azureSubscription: 'Azure Connection'
-#     ScriptType: 'InlineScript'
-#     Inline: |
-#       if((Get-AzResourceGroup | where {$_.ResourceGroupName -eq 'eCommAzure'}).Length -eq 0)
-#       {
-#           New-AzResourceGroup -Name eCommAzure -Location eastus
-#       }
-#     azurePowerShellVersion: 'LatestVersion'
-#     pwsh: true
-
-
-# - task: AzureResourceManagerTemplateDeployment@3
-#   inputs:
-#     deploymentScope: 'Resource Group'
-#     azureResourceManagerConnection: 'Azure Connection'
-#     subscriptionId: '9188b8f6-6bff-4fd2-aa50-710ea416c84a'
-#     action: 'Create Or Update Resource Group'
-#     resourceGroupName: 'eCommAzure'
-#     location: 'East US'
-#     templateLocation: 'URL of the file'
-#     csmFileLink: 'https://raw.githubusercontent.com/whosenbocus/eComm_AzureCloud/master/deploy/Azure/Product.API/ProductAPI.json'
-#     csmParametersFileLink: 'https://raw.githubusercontent.com/whosenbocus/eComm_AzureCloud/master/deploy/Azure/Product.API/ProductAPI.parameters.json'
-#     deploymentMode: 'Incremental'
-#     deploymentOutputs: 'armOutputString'
-
-
-# - task: PowerShell@2
-#   inputs:
-#     filePath: '$(System.DefaultWorkingDirectory)/deploy/parse_arm_deployment_output.ps1'
-#     arguments: '-ArmOutputString ''$(armOutputString)'' -ErrorAction Stop'
 
 # - task: AzurePowerShell@5
 #   inputs:
