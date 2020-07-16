@@ -57,13 +57,17 @@ steps:
       arguments: '-ArmOutputString ''$(armOutputString)'' -ErrorAction Stop'
 
 
-  - task: Docker@2
-    inputs:
-      containerRegistry: 'eCommAzure'
-      repository: 'Cartapi'
-      command: 'buildAndPush'
-      Dockerfile: '**/Dockerfile'
+  # - task: Docker@2
+  #   inputs:
+  #     containerRegistry: 'eCommAzure'
+  #     repository: 'Cartapi'
+  #     command: 'buildAndPush'
+  #     Dockerfile: '**/Dockerfile'
 
+  - task: ContainerBuild@0
+    inputs:
+      dockerRegistryServiceConnection: 'eCommAzure'
+      Dockerfile: 'Dockerfile'
 
 # - task: DotNetCoreCLI@2
 #   inputs:
