@@ -64,9 +64,11 @@ steps:
   #     command: 'buildAndPush'
   #     Dockerfile: '**/Dockerfile'
 
+
   - task: ContainerBuild@0
     inputs:
       dockerRegistryServiceConnection: 'eCommAzure'
+      repository: '$(Build.DefaultWorkingDirectory)/src/services/Cart/Cart.API'
       Dockerfile: 'Dockerfile'
 
 # - task: DotNetCoreCLI@2
