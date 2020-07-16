@@ -69,7 +69,7 @@ steps:
     inputs:
       dockerRegistryServiceConnection: 'eCommAzure'
       repository: '$(Build.DefaultWorkingDirectory)/src/services/Cart/Cart.API'
-      Dockerfile: 'Dockerfile'
+      Dockerfile: '**/Dockerfile'
 
 # - task: DotNetCoreCLI@2
 #   inputs:
