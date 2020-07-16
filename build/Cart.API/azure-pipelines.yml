@@ -57,19 +57,13 @@ steps:
       arguments: '-ArmOutputString ''$(armOutputString)'' -ErrorAction Stop'
 
 
-  # - task: Docker@2
-  #   inputs:
-  #     containerRegistry: 'eCommAzure'
-  #     repository: 'Cartapi'
-  #     command: 'buildAndPush'
-  #     Dockerfile: '**/Dockerfile'
-
-
-  - task: ContainerBuild@0
+  - task: AzureCLI@2
     inputs:
-      dockerRegistryServiceConnection: 'eCommAzure'
-      repository: 'cartapi'
-      Dockerfile: '**/Dockerfile'
+      azureSubscription: 'Azure Connection'
+      scriptType: 'pscore'
+      scriptLocation: 'inlineScript'
+      inlineScript: 'az acr build --image cartapi --registry WHeComm --file DOCKERFILE .'
+      workingDirectory: '$(Build.SourcesDirectory)/src/services/Cart/Cart.API/'
 
 # - task: DotNetCoreCLI@2
 #   inputs:
