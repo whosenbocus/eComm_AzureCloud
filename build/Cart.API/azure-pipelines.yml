@@ -22,21 +22,7 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
-  
-  - task: AzurePowerShell@5
-    inputs:
-      azureSubscription: 'Azure Connection'
-      ScriptType: 'InlineScript'
-      Inline: |
-        if((Get-AzResourceGroup | where {$_.ResourceGroupName -eq 'eCommAzure'}).Length -eq 0)
-        {
-            New-AzResourceGroup -Name eCommAzure -Location eastus
-        }
-        New-AzContainerRegistry -ResourceGroupName eCommAzure -Name WHeComm -EnableAdminUser -Sku Basic
-      azurePowerShellVersion: 'LatestVersion'
-      pwsh: true
-  
-  
+   
   - task: AzureCLI@2
     inputs:
       azureSubscription: 'Azure Connection'
