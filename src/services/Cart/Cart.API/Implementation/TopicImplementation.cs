@@ -9,23 +9,23 @@ using System.Threading.Tasks;
 
 namespace Cart.API.Implementation
 {
-
-    public class Queue : IQueueRepository
+    public class TopicImplementation : ITopic
     {
+        ITopicClient topicClient;
         public IConfiguration Configuration { get; }
-        IQueueClient queueClient;
 
-        public Queue(IConfiguration configuration)
+        public TopicImplementation(IConfiguration configuration)
         {
             Configuration = configuration;
             string ServiceBusConnectionString = Configuration["ServiceBusConnection"];
-            string QueueName = "cart";
-            queueClient = new QueueClient(ServiceBusConnectionString, QueueName);
+            string TopicName = "carttpc";
+            topicClient = new TopicClient(ServiceBusConnectionString, TopicName);
         }
-        public void Save(string message)
+
+        public void save(string message)
         {
             var messageencoded = new Message(Encoding.UTF8.GetBytes(message));
-            queueClient.SendAsync(messageencoded);
+            topicClient.SendAsync(messageencoded);
         }
     }
 }

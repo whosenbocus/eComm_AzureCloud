@@ -29,6 +29,7 @@ namespace Cart.API
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddScoped<IQueueRepository, Queue>();
+            services.AddScoped<ITopic, TopicImplementation>();
 
         }
 
