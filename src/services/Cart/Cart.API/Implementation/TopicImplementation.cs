@@ -17,7 +17,7 @@ namespace Cart.API.Implementation
         public TopicImplementation(IConfiguration configuration)
         {
             Configuration = configuration;
-            string ServiceBusConnectionString = Configuration["ServiceBusConnection"];
+            string ServiceBusConnectionString = new Token().GetSecretAsync().Result;
             string TopicName = "carttpc";
             topicClient = new TopicClient(ServiceBusConnectionString, TopicName);
         }

@@ -18,7 +18,7 @@ namespace Cart.API.Implementation
         public Queue(IConfiguration configuration)
         {
             Configuration = configuration;
-            string ServiceBusConnectionString = Configuration["ServiceBusConnection"];
+            string ServiceBusConnectionString = new Token().GetSecretAsync().Result;
             string QueueName = "cart";
             queueClient = new QueueClient(ServiceBusConnectionString, QueueName);
         }
