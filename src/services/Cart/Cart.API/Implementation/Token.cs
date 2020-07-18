@@ -19,7 +19,7 @@ namespace Cart.API.Implementation
                   azureServiceTokenProvider.KeyVaultTokenCallback));
 
             var secret = await keyVaultClient
-              .GetSecretAsync("https://cartapivault .azure.net", "ServiceBusConnection")
+              .GetSecretAsync("https://cartapivault.vault.azure.net", "ServiceBusConnection")
               .ConfigureAwait(false);
 
             return secret.Value;
