@@ -25,7 +25,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Payment.UnitTests", "servic
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Product.Function", "services\Product\Product.Function\Product.Function.csproj", "{8ADD9954-76B5-4C16-953B-8A8FEF51E63B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cart.API", "services\Cart\Cart.API\Cart.API.csproj", "{87F9D2E3-B7D5-476A-89C2-C7597DC9BA2E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cart.API", "services\Cart\Cart.API\Cart.API.csproj", "{87F9D2E3-B7D5-476A-89C2-C7597DC9BA2E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "User.API", "services\User\User.API\User.API.csproj", "{89CA1D8B-C294-418C-A535-557DA415E56A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -53,6 +55,10 @@ Global
 		{87F9D2E3-B7D5-476A-89C2-C7597DC9BA2E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{87F9D2E3-B7D5-476A-89C2-C7597DC9BA2E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{87F9D2E3-B7D5-476A-89C2-C7597DC9BA2E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{89CA1D8B-C294-418C-A535-557DA415E56A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{89CA1D8B-C294-418C-A535-557DA415E56A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{89CA1D8B-C294-418C-A535-557DA415E56A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{89CA1D8B-C294-418C-A535-557DA415E56A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -69,6 +75,7 @@ Global
 		{2A9DAB6E-05E5-43F7-9505-0A44EF070B93} = {14FC6ECC-95E2-47B5-9C8A-E72D0FAC760F}
 		{8ADD9954-76B5-4C16-953B-8A8FEF51E63B} = {5DF0B5D6-6E73-40E4-A529-B84CCF7C1B87}
 		{87F9D2E3-B7D5-476A-89C2-C7597DC9BA2E} = {7A58D7A0-0F03-4DED-8CD8-C628CFC58F49}
+		{89CA1D8B-C294-418C-A535-557DA415E56A} = {62A9B8EE-C216-4CC5-AAEB-2CD779D7C642}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8B906B57-4FBB-4D0C-B060-F433F9BD41DF}
