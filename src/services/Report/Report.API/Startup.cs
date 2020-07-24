@@ -31,8 +31,16 @@ namespace Report.API
         {
             services.AddControllers();
             services.AddScoped<IReportRepository, Infrastructure.Implementation.Report>();
+
+            var server = Configuration["DatabaseServer"];
+            var database = Configuration["DatabaseName"];
+            var user = Configuration["DatabaseUser"];
+            var password = Configuration["DatabaseUserPassword"];
+            var connection = String.Format("Server={0};Database={1};User={2};Password={3};", server, database, user, password);
+
+
             services.AddDbContext<ModelContext>(options =>
-        options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+        options.UseSqlServer(connection));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

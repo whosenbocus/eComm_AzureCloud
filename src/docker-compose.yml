@@ -1,0 +1,22 @@
+version: '3.4'
+
+services:
+    report.api:
+        image: ${DOCKER_REGISTRY-}reportapi
+        build:
+            context: .
+            dockerfile: services/Report/Report.API/Dockerfile
+        depends_on:
+                - db
+        environment:
+            DatabaseServer: "db"
+            DatabaseName: "mydb"
+            DatabaseUser: "sa"
+            DatabaseUserPassword: "Yukon900"
+    db:
+        image: "microsoft/mssql-server-linux"
+        ports: 
+            - "1433:1433"
+        environment:
+            SA_PASSWORD: "Yukon900"
+            ACCEPT_EULA: "Y"
