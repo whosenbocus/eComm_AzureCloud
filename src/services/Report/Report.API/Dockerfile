@@ -19,9 +19,4 @@ RUN dotnet publish "Report.API.csproj" -c Release -o /app/publish
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-COPY services/Report/Report.API/entrypoint.sh .
-#ENTRYPOINT ["dotnet", "Report.API.dll"]
-
-
-RUN chmod +x entrypoint.sh
-#CMD /bin/bash ./entrypoint.sh
+ENTRYPOINT ["dotnet", "Report.API.dll"]

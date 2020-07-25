@@ -61,6 +61,8 @@ namespace Report.API
             {
                 endpoints.MapControllers();
             });
+
+            PrepDB.PrepDatabase(app);
         }
     }
 }
